@@ -1,3 +1,4 @@
+// gcc -Wall -pedantic UDP-client.c -l ws2_32 -o client.exe
 #ifdef _WIN32
 	#define _WIN32_WINNT _WIN32_WINNT_WIN7
 	#include <winsock2.h> //for all socket programming
@@ -6,6 +7,7 @@
 	#include <unistd.h> //for close
 	#include <stdlib.h> //for exit
 	#include <string.h> //for memset
+	#include <stdint.h> // for int32_t 
 	int OSInit( void )
 	{
 		WSADATA wsaData;
@@ -119,39 +121,44 @@ int initialization( struct sockaddr ** internet_address, socklen_t * internet_ad
 
 void execution( int internet_socket, struct sockaddr * internet_address, socklen_t internet_address_length )
 {
-	char packet [1000];
-	int packets;
-	
-	printf("Hoeveel pakketten moeten er gestuurd worden?\r\n");
-	gets(packet);
-	packets = atoi(packet);
-	
 	//Step 2.1
-	
 	int number_of_bytes_send = 0;
-	number_of_bytes_send = sendto( internet_socket, "Hello UDP world!", 16, 0, internet_address, internet_address_length );
+	
+	char aantal_packets[1000];
+	int32_t packets=0;
+	packets = atoi(aantal_packets);
+	printf("Geef een aantal pakketen in: ");
+	gets(aantal_packets);
+	
+	number_of_bytes_send = sendto( internet_socket, aantal_packets, strlen(aantal_packets), 0, internet_address, internet_address_length );
 	if( number_of_bytes_send == -1 )
 	{
 		perror( "sendto" );
 	}
 	
-	for(int i = 0; i< packets; i++)
-	{
 	
+	packets = atoi(aantal_packets);
+
 	//Step 2.2
-		int number_of_bytes_received = 0;
-		char buffer[1000];
-		number_of_bytes_received = recvfrom( internet_socket, buffer, ( sizeof buffer ) - 1, 0, internet_address, &internet_address_length );
-		if( number_of_bytes_received == -1 )
+	int timesReceived=0;
+	int number_of_bytes_received = 0;
+	char buffer[1000];
+	number_of_bytes_received = recvfrom( internet_socket, buffer, ( sizeof buffer ) - 1, 0, internet_address, &internet_address_length );
+	if( number_of_bytes_received == -1 )
+	{
+		perror( "recvfrom" );
+	}
+	else
+	{
+	for (int i = 0; i < packets; i++)
 		{
-			perror( "recvfrom" );
-		}
-		else
-		{
-			buffer[number_of_bytes_received] = '\0';
-			printf( "Received : %s\n", buffer );
+		buffer[number_of_bytes_received] = '\0';
+		printf( "Received : %s\n", buffer );
+		timesReceived++;
 		}
 	}
+	printf("\n%d times of the %d succeeded.", timesReceived, packets);
+	
 }
 
 void cleanup( int internet_socket, struct sockaddr * internet_address )

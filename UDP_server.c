@@ -124,15 +124,11 @@ int initialization()
 
 void execution( int internet_socket )
 {
-	for(int j=0;j<1;j++)
-	{
-		char packet [1000];
-		int packets;
+	char aantal_packets[1000];
+	//char packet[1000];
+	int packets;
 	
-		printf("Hoeveel pakketten moeten er gestuurd worden?\r\n");
-		gets(packet);
-	do
-	{
+	
 	//Step 2.1
 	int number_of_bytes_received = 0;
 	char buffer[1000];
@@ -149,18 +145,15 @@ void execution( int internet_socket )
 		printf( "Received : %s\n", buffer );
 	}
 	
-	packets = atoi(packet);
-	for(int i=0;i<packets;i++)
+	for(int i=0;i<buffer;i++)
 	{
 	//Step 2.2
-	int number_of_bytes_send = 0;
-	number_of_bytes_send = sendto( internet_socket, "Hello UDP world!", 16, 0, (struct sockaddr *) &client_internet_address, client_internet_address_length );
-	if( number_of_bytes_send == -1 )
-	{
-		perror( "sendto" );
-	}
-	}
-	}while(packet != 0);
+		int number_of_bytes_send = 0;
+		number_of_bytes_send = sendto( internet_socket, "Hello UDP world!", 16, 0, (struct sockaddr *) &client_internet_address, client_internet_address_length );
+		if( number_of_bytes_send == -1 )
+		{
+			perror( "sendto" );
+		}
 	}
 }
 
