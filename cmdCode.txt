@@ -1,0 +1,12 @@
+linux:
+
+cd rmb
+
+gcc ... -o ...
+
+./ iet runne
+
+
+windows:
+
+gcc ... -l ws2_32 -o ...
