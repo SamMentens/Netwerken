@@ -123,11 +123,11 @@ void execution( int internet_socket, struct sockaddr * internet_address, socklen
 {
 	//Step 2.1
 	int number_of_bytes_send = 0;
-	
 	char aantal_packets[1000];
 	int32_t packets=0;
+	
 	packets = atoi(aantal_packets);
-	printf("Geef een aantal pakketen in: ");
+	printf("Geef de hoeveelheid pakketen in: ");
 	gets(aantal_packets);
 	
 	number_of_bytes_send = sendto( internet_socket, aantal_packets, strlen(aantal_packets), 0, internet_address, internet_address_length );
@@ -135,7 +135,6 @@ void execution( int internet_socket, struct sockaddr * internet_address, socklen
 	{
 		perror( "sendto" );
 	}
-	
 	
 	packets = atoi(aantal_packets);
 
@@ -150,11 +149,11 @@ void execution( int internet_socket, struct sockaddr * internet_address, socklen
 	}
 	else
 	{
-	for (int i = 0; i < packets; i++)
+		for (int i = 0; i < packets; i++)
 		{
-		buffer[number_of_bytes_received] = '\0';
-		printf( "Received : %s\n", buffer );
-		timesReceived++;
+			buffer[number_of_bytes_received] = '\0';
+			printf( "Received : %s\n", buffer );
+			timesReceived++;
 		}
 	}
 	printf("\n%d times of the %d succeeded.", timesReceived, packets);

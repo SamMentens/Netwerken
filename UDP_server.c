@@ -124,12 +124,8 @@ int initialization()
 
 void execution( int internet_socket )
 {
-	char aantal_packets[1000];
-	//char packet[1000];
-	int packets;
-	
-	
 	//Step 2.1
+	char aantal_packets[1000];
 	int number_of_bytes_received = 0;
 	char buffer[1000];
 	struct sockaddr_storage client_internet_address;
